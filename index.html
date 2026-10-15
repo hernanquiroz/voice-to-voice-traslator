@@ -14,146 +14,74 @@
 <style>
   :root {
     --bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --card-bg: #ffffff;
-    --card-text: #333333;
-    --card-subtext: #666666;
-    --border: #e0e0e0;
-    --input-bg: #ffffff;
-    --input-text: #333333;
-    --result-trans: #f0f4ff;
-    --result-trad: #f0fff4;
-    --accent: #667eea;
-    --accent-2: #764ba2;
-    --divider: #ececec;
-    --history-bg: #fafafa;
+    --card-bg: #ffffff; --card-text: #333333; --card-subtext: #666666;
+    --border: #e0e0e0; --input-bg: #ffffff; --input-text: #333333;
+    --result-trans: #f0f4ff; --result-trad: #f0fff4;
+    --accent: #667eea; --accent-2: #764ba2;
+    --divider: #ececec; --history-bg: #fafafa;
     --word-hover: rgba(102,126,234,0.15);
     --word-active: rgba(102,126,234,0.35);
   }
   body.dark {
     --bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    --card-bg: #1e1e2e;
-    --card-text: #e0e0e0;
-    --card-subtext: #999999;
-    --border: #333344;
-    --input-bg: #2a2a3e;
-    --input-text: #e0e0e0;
-    --result-trans: #1a1f3a;
-    --result-trad: #1a2a1f;
-    --accent: #8b9dff;
-    --accent-2: #b28ddb;
-    --divider: #333344;
-    --history-bg: #23233a;
+    --card-bg: #1e1e2e; --card-text: #e0e0e0; --card-subtext: #999999;
+    --border: #333344; --input-bg: #2a2a3e; --input-text: #e0e0e0;
+    --result-trans: #1a1f3a; --result-trad: #1a2a1f;
+    --accent: #8b9dff; --accent-2: #b28ddb;
+    --divider: #333344; --history-bg: #23233a;
     --word-hover: rgba(139,157,255,0.2);
     --word-active: rgba(139,157,255,0.45);
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: var(--bg);
-    background-attachment: fixed;
-    min-height: 100vh;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 20px;
-    transition: background 0.3s;
-    color: var(--card-text);
+    background: var(--bg); background-attachment: fixed;
+    min-height: 100vh; display: flex; align-items: flex-start;
+    justify-content: center; padding: 20px;
+    transition: background 0.3s; color: var(--card-text);
   }
   .container {
-    background: var(--card-bg);
-    border-radius: 24px;
+    background: var(--card-bg); border-radius: 24px;
     box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    padding: 32px;
-    max-width: 700px;
-    width: 100%;
+    padding: 32px; max-width: 700px; width: 100%;
     transition: background 0.3s, color 0.3s;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 20px; margin-bottom: 20px;
   }
-
-  .header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 12px;
-    margin-bottom: 8px;
-  }
+  .header-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 8px; }
   h1 { font-size: 1.6rem; color: var(--card-text); line-height: 1.2; }
   .subtitle { color: var(--card-subtext); margin-bottom: 24px; font-size: 0.9rem; }
-
   .icon-btn {
-    background: transparent;
-    border: 2px solid var(--border);
-    border-radius: 12px;
-    width: 42px;
-    height: 42px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-    color: var(--card-text);
-    flex-shrink: 0;
+    background: transparent; border: 2px solid var(--border); border-radius: 12px;
+    width: 42px; height: 42px; font-size: 1.2rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; color: var(--card-text); flex-shrink: 0;
   }
   .icon-btn:hover { border-color: var(--accent); transform: scale(1.05); }
   .icon-btn:active { transform: scale(0.95); }
-
-  .langs {
-    display: grid;
-    grid-template-columns: 1fr 44px 1fr;
-    gap: 10px;
-    align-items: end;
-    margin-bottom: 20px;
-  }
+  .langs { display: grid; grid-template-columns: 1fr 44px 1fr; gap: 10px; align-items: end; margin-bottom: 20px; }
   .langs label { display: block; font-size: 0.8rem; color: var(--card-subtext); margin-bottom: 6px; font-weight: 600; }
   select {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid var(--border);
-    border-radius: 12px;
-    font-size: 0.95rem;
-    background: var(--input-bg);
-    color: var(--input-text);
-    cursor: pointer;
-    transition: border-color 0.2s;
-    appearance: none;
-    -webkit-appearance: none;
+    width: 100%; padding: 12px; border: 2px solid var(--border);
+    border-radius: 12px; font-size: 0.95rem; background: var(--input-bg);
+    color: var(--input-text); cursor: pointer; transition: border-color 0.2s;
+    appearance: none; -webkit-appearance: none;
     background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 16px;
-    padding-right: 34px;
+    background-repeat: no-repeat; background-position: right 10px center;
+    background-size: 16px; padding-right: 34px;
   }
   select:focus { outline: none; border-color: var(--accent); }
-
   .swap-btn {
-    background: transparent;
-    border: 2px solid var(--border);
-    border-radius: 12px;
-    height: 45px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    color: var(--card-text);
-    width: 44px;
+    background: transparent; border: 2px solid var(--border); border-radius: 12px;
+    height: 45px; font-size: 1.1rem; cursor: pointer; transition: all 0.2s;
+    color: var(--card-text); width: 44px;
   }
   .swap-btn:hover { border-color: var(--accent); color: var(--accent); }
-
   .record-btn {
-    width: 100%;
-    padding: 20px;
-    border: none;
-    border-radius: 16px;
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: #fff;
+    width: 100%; padding: 20px; border: none; border-radius: 16px;
+    font-size: 1.15rem; font-weight: 700; color: #fff;
     background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 8px 20px rgba(102,126,234,0.4);
-    margin-top: 8px;
+    cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 8px 20px rgba(102,126,234,0.4); margin-top: 8px;
   }
   .record-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 25px rgba(102,126,234,0.5); }
   .record-btn:active { transform: translateY(0); }
@@ -166,13 +94,9 @@
     0%, 100% { box-shadow: 0 8px 20px rgba(245,101,101,0.4); }
     50%      { box-shadow: 0 8px 40px rgba(245,101,101,0.8); }
   }
-
   .result {
-    margin-top: 20px;
-    padding: 18px;
-    border-radius: 16px;
-    display: none;
-    animation: slideIn 0.3s ease;
+    margin-top: 20px; padding: 18px; border-radius: 16px;
+    display: none; animation: slideIn 0.3s ease;
   }
   @keyframes slideIn {
     from { opacity: 0; transform: translateY(-8px); }
@@ -191,68 +115,35 @@
     color: var(--card-subtext); opacity: 0.75; letter-spacing: 0.2px;
   }
   .result .text { font-size: 1.1rem; color: var(--card-text); line-height: 1.7; word-break: break-word; }
-
-  /* ── Palabras tocables ──────────────────────────────── */
   .word {
-    cursor: pointer;
-    padding: 2px 4px;
-    border-radius: 6px;
+    cursor: pointer; padding: 2px 4px; border-radius: 6px;
     transition: background 0.15s, color 0.15s, transform 0.1s;
-    display: inline-block;
-    user-select: none;
+    display: inline-block; user-select: none;
   }
-  .word:hover {
-    background: var(--word-hover);
-    color: var(--accent);
+  .word:hover { background: var(--word-hover); color: var(--accent); }
+  .word:active, .word.active {
+    background: var(--word-active); color: var(--accent); transform: scale(0.96);
   }
-  .word:active,
-  .word.active {
-    background: var(--word-active);
-    color: var(--accent);
-    transform: scale(0.96);
-  }
-
   .status {
-    margin-top: 14px;
-    text-align: center;
-    font-size: 0.88rem;
-    color: var(--card-subtext);
-    min-height: 20px;
+    margin-top: 14px; text-align: center; font-size: 0.88rem;
+    color: var(--card-subtext); min-height: 20px;
   }
   .status.error { color: #c53030; font-weight: 600; }
   body.dark .status.error { color: #ff8080; }
-
   .actions { display: flex; gap: 10px; margin-top: 14px; position: relative; }
   .actions button {
-    flex: 1;
-    padding: 11px;
-    border: 2px solid var(--border);
-    border-radius: 12px;
-    background: var(--input-bg);
-    font-size: 0.88rem;
-    font-weight: 600;
-    cursor: pointer;
-    color: var(--card-text);
-    transition: all 0.2s;
+    flex: 1; padding: 11px; border: 2px solid var(--border); border-radius: 12px;
+    background: var(--input-bg); font-size: 0.88rem; font-weight: 600;
+    cursor: pointer; color: var(--card-text); transition: all 0.2s;
   }
   .actions button:hover { border-color: var(--accent); color: var(--accent); }
-
-  /* ── Popup velocidades ──────────────────────────────── */
   .speed-popup {
-    position: absolute;
-    bottom: calc(100% + 8px);
-    left: 0;
-    background: var(--card-bg);
-    border: 2px solid var(--accent);
-    border-radius: 14px;
-    padding: 10px;
+    position: absolute; bottom: calc(100% + 8px); left: 0;
+    background: var(--card-bg); border: 2px solid var(--accent);
+    border-radius: 14px; padding: 10px;
     box-shadow: 0 12px 30px rgba(0,0,0,0.2);
-    display: none;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
-    z-index: 50;
-    animation: popIn 0.18s ease;
-    min-width: 240px;
+    display: none; grid-template-columns: repeat(3, 1fr);
+    gap: 6px; z-index: 50; animation: popIn 0.18s ease; min-width: 240px;
   }
   .speed-popup.show { display: grid; }
   @keyframes popIn {
@@ -260,83 +151,46 @@
     to   { opacity: 1; transform: translateY(0) scale(1); }
   }
   .speed-popup .popup-title {
-    grid-column: 1 / -1;
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    color: var(--card-subtext);
-    font-weight: 700;
-    letter-spacing: 0.4px;
-    text-align: center;
-    margin-bottom: 2px;
+    grid-column: 1 / -1; font-size: 0.72rem; text-transform: uppercase;
+    color: var(--card-subtext); font-weight: 700; letter-spacing: 0.4px;
+    text-align: center; margin-bottom: 2px;
   }
   .speed-popup .sp-btn {
-    padding: 9px 6px;
-    border: 2px solid var(--border);
-    border-radius: 10px;
-    background: var(--input-bg);
-    color: var(--card-text);
-    font-size: 0.85rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.15s;
+    padding: 9px 6px; border: 2px solid var(--border); border-radius: 10px;
+    background: var(--input-bg); color: var(--card-text); font-size: 0.85rem;
+    font-weight: 700; cursor: pointer; transition: all 0.15s;
   }
   .speed-popup .sp-btn:hover { border-color: var(--accent); color: #fff; background: var(--accent); }
   .speed-popup .sp-btn:active { transform: scale(0.95); }
-
   .warning {
-    background: #fffaf0;
-    border: 1px solid #f6ad55;
-    color: #7b341e;
-    padding: 12px;
-    border-radius: 12px;
-    font-size: 0.85rem;
-    margin-bottom: 20px;
-    display: none;
+    background: #fffaf0; border: 1px solid #f6ad55; color: #7b341e;
+    padding: 12px; border-radius: 12px; font-size: 0.85rem;
+    margin-bottom: 20px; display: none;
   }
   body.dark .warning { background: #3a2a10; border-color: #b7791f; color: #ffd89b; }
-
-  /* ── Velocidad global ───────────────────────────────── */
   .speed-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-top: 14px;
-    padding: 10px 14px;
-    background: var(--history-bg);
-    border-radius: 12px;
-    font-size: 0.85rem;
-    color: var(--card-subtext);
+    display: flex; align-items: center; gap: 12px;
+    margin-top: 14px; padding: 10px 14px;
+    background: var(--history-bg); border-radius: 12px;
+    font-size: 0.85rem; color: var(--card-subtext);
   }
   .speed-row label { font-weight: 600; white-space: nowrap; }
   .speed-row input[type="range"] {
-    flex: 1;
-    -webkit-appearance: none;
-    appearance: none;
-    height: 4px;
-    border-radius: 2px;
-    background: var(--border);
-    outline: none;
+    flex: 1; -webkit-appearance: none; appearance: none;
+    height: 4px; border-radius: 2px; background: var(--border); outline: none;
   }
   .speed-row input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: var(--accent);
-    cursor: pointer;
+    -webkit-appearance: none; appearance: none;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--accent); cursor: pointer;
   }
   .speed-row input[type="range"]::-moz-range-thumb {
     width: 18px; height: 18px; border-radius: 50%;
     background: var(--accent); cursor: pointer; border: none;
   }
   .speed-value { font-weight: 700; color: var(--accent); min-width: 40px; text-align: right; }
-
-  /* ── Historial ──────────────────────────────────────── */
   .history-section {
-    margin-top: 24px;
-    border-top: 1px solid var(--divider);
-    padding-top: 16px;
+    margin-top: 24px; border-top: 1px solid var(--divider); padding-top: 16px;
   }
   .history-header {
     display: flex; justify-content: space-between; align-items: center;
@@ -365,8 +219,6 @@
     cursor: pointer; padding: 4px 8px; border-radius: 6px; font-weight: 600;
   }
   .clear-history:hover { background: rgba(229,62,62,0.1); }
-
-  /* ── Crédito ────────────────────────────────────────── */
   .credit {
     margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--divider);
     display: flex; align-items: center; justify-content: center;
@@ -378,7 +230,6 @@
     0%, 100% { transform: scale(1); }
     50%      { transform: scale(1.25); }
   }
-
   @media (max-width: 480px) {
     .container { padding: 22px; border-radius: 20px; }
     h1 { font-size: 1.35rem; }
@@ -438,7 +289,6 @@
       <button id="btnRepetir">🔊 Repetir</button>
       <button id="btnCopiar">📋 Copiar</button>
       <button id="btnCompartir">📤 Compartir</button>
-
       <div class="speed-popup" id="speedPopup">
         <div class="popup-title">Velocidad de reproducción</div>
         <button class="sp-btn" data-speed="0.5">0.5x</button>
@@ -497,7 +347,6 @@ const IDIOMAS = {
   "vi": { nombre: "🇻🇳 Vietnamita", voz: "vi-VN", google: "vi"    }
 };
 
-// Idiomas sin espacios (se dividen por caracteres)
 const IDIOMAS_SIN_ESPACIOS = new Set(["zh", "ja", "ko", "th"]);
 
 const STORAGE = { tema: "tv_tema", historial: "tv_historial", velocidad: "tv_velocidad" };
@@ -523,7 +372,7 @@ const btnClearHistory = document.getElementById("btnClearHistory");
 const speedPopup   = document.getElementById("speedPopup");
 const btnRepetir   = document.getElementById("btnRepetir");
 
-// ─── Inicializar selects ────────────────────────────────────
+// ─── Init selects ───────────────────────────────────────────
 for (const [code, info] of Object.entries(IDIOMAS)) {
   selOrigen.innerHTML += `<option value="${code}">${info.nombre}</option>`;
   selDestino.innerHTML += `<option value="${code}">${info.nombre}</option>`;
@@ -547,7 +396,6 @@ function aplicarTema(tema) {
 const temaGuardado = localStorage.getItem(STORAGE.tema)
   || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
 aplicarTema(temaGuardado);
-
 btnTema.addEventListener("click", () => {
   aplicarTema(document.body.classList.contains("dark") ? "light" : "dark");
 });
@@ -621,19 +469,15 @@ document.getElementById("historyHeader").addEventListener("click", (e) => {
   if (e.target.id === "btnClearHistory" || e.target.closest("#btnClearHistory")) return;
   historySection.classList.toggle("collapsed");
 });
-
 btnClearHistory.addEventListener("click", (e) => {
   e.stopPropagation();
   if (confirm("¿Borrar todo el historial?")) {
-    historial = [];
-    guardarHistorial();
-    renderHistorial();
+    historial = []; guardarHistorial(); renderHistorial();
   }
 });
-
 renderHistorial();
 
-// ─── Swap idiomas ───────────────────────────────────────────
+// ─── Swap ───────────────────────────────────────────────────
 btnSwap.addEventListener("click", () => {
   const a = selOrigen.value;
   selOrigen.value = selDestino.value;
@@ -642,13 +486,12 @@ btnSwap.addEventListener("click", () => {
   setTimeout(() => setStatus(""), 1500);
 });
 
-// ─── Reconocimiento ─────────────────────────────────────────
+// ─── Reconocimiento de voz ──────────────────────────────────
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 if (!SR) {
   warning.style.display = "block";
   btnGrabar.disabled = true;
 }
-
 let grabando = false;
 let reconocimiento = null;
 
@@ -703,7 +546,6 @@ function iniciarGrabacion() {
     setStatus(msg, true);
     detenerGrabacion();
   };
-
   reconocimiento.onend = () => detenerGrabacion();
   reconocimiento.start();
 }
@@ -751,8 +593,139 @@ async function traducirMyMemory(texto, srcCode, tgtCode) {
   return data.responseData.translatedText;
 }
 
-// ─── Renderizar texto con palabras tocables ─────────────────
-let textoTraducidoActual = ""; // guardamos el texto plano para copiar/compartir
+// ─── Voces: carga robusta ───────────────────────────────────
+let vocesDisponibles = [];
+
+function cargarVoces() {
+  if (!("speechSynthesis" in window)) return;
+  vocesDisponibles = window.speechSynthesis.getVoices() || [];
+  console.log(`🎤 ${vocesDisponibles.length} voces disponibles`);
+}
+
+cargarVoces();
+if ("speechSynthesis" in window) {
+  window.speechSynthesis.onvoiceschanged = cargarVoces;
+  // Reintentos por si tarda en cargar
+  setTimeout(cargarVoces, 300);
+  setTimeout(cargarVoces, 1000);
+  setTimeout(cargarVoces, 2500);
+}
+
+// Buscar voz local con alias
+function encontrarVoz(langCode) {
+  const target = IDIOMAS[langCode].voz.toLowerCase();
+  const prefijo = target.split("-")[0];
+
+  // Alias: chino puede venir como cmn, yue, zh, etc.
+  const alias = prefijo === "zh" ? ["zh", "cmn", "yue"] : [prefijo];
+
+  for (const pre of alias) {
+    // 1. Coincidencia exacta
+    let v = vocesDisponibles.find(x => x.lang.toLowerCase() === target);
+    if (v) return v;
+
+    // 2. Coincidencia por prefijo con guion
+    v = vocesDisponibles.find(x => x.lang.toLowerCase().startsWith(pre + "-"));
+    if (v) return v;
+
+    // 3. Prefijo con guion bajo
+    v = vocesDisponibles.find(x => x.lang.toLowerCase().startsWith(pre + "_"));
+    if (v) return v;
+
+    // 4. Solo prefijo
+    v = vocesDisponibles.find(x => x.lang.toLowerCase().startsWith(pre));
+    if (v) return v;
+  }
+  return null;
+}
+
+// ─── Reproducir audio (con fallback) ────────────────────────
+let audioActual = null;
+
+function detenerAudio() {
+  if (audioActual) {
+    try { audioActual.pause(); audioActual.currentTime = 0; } catch(e) {}
+    audioActual = null;
+  }
+  if ("speechSynthesis" in window) {
+    try { window.speechSynthesis.cancel(); } catch(e) {}
+  }
+}
+
+function hablar(texto, langCode, rate = 1) {
+  if (!texto || !texto.trim()) return;
+  detenerAudio();
+
+  const voz = encontrarVoz(langCode);
+
+  if (voz) {
+    // ✅ Hay voz local: usar SpeechSynthesis
+    console.log(`🔊 Voz local: ${voz.name} (${voz.lang})`);
+    const utter = new SpeechSynthesisUtterance(texto);
+    utter.lang = voz.lang;
+    utter.voice = voz;
+    utter.rate = Math.max(0.1, Math.min(3, rate));
+    utter.pitch = 1;
+
+    utter.onerror = (e) => {
+      console.warn("TTS error, usando fallback:", e);
+      hablarConGoogle(texto, langCode);
+    };
+
+    window.speechSynthesis.speak(utter);
+  } else {
+    // ⚠️ No hay voz local: fallback a Google TTS
+    console.log(`⚠️ Sin voz local para ${langCode}, usando Google TTS`);
+    hablarConGoogle(texto, langCode);
+  }
+}
+
+// Fallback: Google Translate TTS
+function hablarConGoogle(texto, langCode) {
+  const tl = IDIOMAS[langCode].google;
+  // Google TTS tiene límite de ~200 caracteres por llamada
+  const trozos = dividirEnTrozos(texto, 190);
+
+  let indice = 0;
+
+  function reproducirSiguiente() {
+    if (indice >= trozos.length) return;
+    const trozo = trozos[indice++];
+
+    const url = `https://translate.googleapis.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(trozo)}&tl=${tl}&client=gtx&ttsspeed=1`;
+
+    audioActual = new Audio(url);
+    audioActual.onended = reproducirSiguiente;
+    audioActual.onerror = () => {
+      console.error("Google TTS falló");
+      setStatus("⚠️ No hay voz disponible para este idioma en tu dispositivo", true);
+    };
+
+    audioActual.play().catch(err => {
+      console.error("Error al reproducir:", err);
+      setStatus("⚠️ No se pudo reproducir la voz para este idioma", true);
+    });
+  }
+
+  reproducirSiguiente();
+}
+
+// Divide el texto respetando no cortar palabras
+function dividirEnTrozos(texto, maxLen) {
+  const trozos = [];
+  let restante = texto;
+  while (restante.length > maxLen) {
+    let corte = restante.lastIndexOf(" ", maxLen);
+    if (corte === -1) corte = maxLen;
+    trozos.push(restante.slice(0, corte));
+    restante = restante.slice(corte).trim();
+  }
+  if (restante) trozos.push(restante);
+  return trozos;
+}
+
+// ─── Renderizar palabras tocables ───────────────────────────
+let textoTraducidoActual = "";
 
 function renderPalabrasTocables(texto) {
   textoTraducidoActual = texto;
@@ -762,7 +735,6 @@ function renderPalabrasTocables(texto) {
   const sinEspacios = IDIOMAS_SIN_ESPACIOS.has(langCode);
 
   if (sinEspacios) {
-    // Chino / japonés / coreano / tailandés → un <span> por carácter
     for (const ch of texto) {
       if (/\s/.test(ch)) {
         textoTraducido.appendChild(document.createTextNode(ch));
@@ -775,11 +747,9 @@ function renderPalabrasTocables(texto) {
       textoTraducido.appendChild(span);
     }
   } else {
-    // Idiomas con espacios → split conservando los espacios
     const partes = texto.split(/(\s+|[.,!?;:¿¡"()\[\]{}…—–])/);
     for (const p of partes) {
       if (!p) continue;
-      // Si es solo puntuación o espacios, no lo hacemos tocable
       if (/^\s+$/.test(p) || /^[.,!?;:¿¡"()\[\]{}…—–]+$/.test(p)) {
         textoTraducido.appendChild(document.createTextNode(p));
       } else {
@@ -792,40 +762,18 @@ function renderPalabrasTocables(texto) {
     }
   }
 
-  // Añadir listener a cada palabra
   textoTraducido.querySelectorAll(".word").forEach(span => {
     span.addEventListener("click", (e) => {
       e.stopPropagation();
       const palabra = span.dataset.word;
       if (!palabra) return;
-
-      // Feedback visual
       span.classList.add("active");
       setTimeout(() => span.classList.remove("active"), 300);
-
-      // Reproducir solo esa palabra, a la velocidad global
       hablar(palabra, selDestino.value, parseFloat(speed.value) || 1);
       setStatus(`🔊 "${palabra}"`);
       setTimeout(() => setStatus("✅ Listo — toca cualquier palabra para repetirla"), 1200);
     });
   });
-}
-
-// ─── Texto a voz ────────────────────────────────────────────
-function hablar(texto, langCode, rate = 1) {
-  if (!("speechSynthesis" in window)) return;
-  window.speechSynthesis.cancel();
-  const utter = new SpeechSynthesisUtterance(texto);
-  utter.lang = IDIOMAS[langCode].voz;
-  utter.rate = Math.max(0.1, Math.min(3, rate));
-  utter.pitch = 1;
-
-  const voces = window.speechSynthesis.getVoices();
-  const prefijo = IDIOMAS[langCode].voz.slice(0, 2).toLowerCase();
-  const voz = voces.find(v => v.lang.toLowerCase().startsWith(prefijo));
-  if (voz) utter.voice = voz;
-
-  window.speechSynthesis.speak(utter);
 }
 
 // ─── Popup velocidad ────────────────────────────────────────
@@ -881,12 +829,6 @@ document.getElementById("btnCompartir").addEventListener("click", async () => {
     window.open(`https://wa.me/?text=${encodeURIComponent(textoTraducidoActual)}`, "_blank");
   }
 });
-
-// Voces
-if ("speechSynthesis" in window) {
-  window.speechSynthesis.onvoiceschanged = () => {};
-  window.speechSynthesis.getVoices();
-}
 
 // Service Worker PWA
 if ("serviceWorker" in navigator) {
