@@ -26,6 +26,8 @@
     --accent-2: #764ba2;
     --divider: #ececec;
     --history-bg: #fafafa;
+    --word-hover: rgba(102,126,234,0.15);
+    --word-active: rgba(102,126,234,0.35);
   }
   body.dark {
     --bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
@@ -41,6 +43,8 @@
     --accent-2: #b28ddb;
     --divider: #333344;
     --history-bg: #23233a;
+    --word-hover: rgba(139,157,255,0.2);
+    --word-active: rgba(139,157,255,0.45);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -177,8 +181,36 @@
   .result.show { display: block; }
   .result.transcript { background: var(--result-trans); border-left: 4px solid var(--accent); }
   .result.translation { background: var(--result-trad); border-left: 4px solid #48bb78; }
-  .result .label { font-size: 0.75rem; text-transform: uppercase; color: var(--card-subtext); margin-bottom: 8px; font-weight: 700; letter-spacing: 0.5px; }
-  .result .text { font-size: 1.1rem; color: var(--card-text); line-height: 1.5; word-break: break-word; }
+  .result .label {
+    font-size: 0.75rem; text-transform: uppercase; color: var(--card-subtext);
+    margin-bottom: 8px; font-weight: 700; letter-spacing: 0.5px;
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  }
+  .result .hint {
+    font-size: 0.65rem; font-weight: 500; text-transform: none;
+    color: var(--card-subtext); opacity: 0.75; letter-spacing: 0.2px;
+  }
+  .result .text { font-size: 1.1rem; color: var(--card-text); line-height: 1.7; word-break: break-word; }
+
+  /* ── Palabras tocables ──────────────────────────────── */
+  .word {
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 6px;
+    transition: background 0.15s, color 0.15s, transform 0.1s;
+    display: inline-block;
+    user-select: none;
+  }
+  .word:hover {
+    background: var(--word-hover);
+    color: var(--accent);
+  }
+  .word:active,
+  .word.active {
+    background: var(--word-active);
+    color: var(--accent);
+    transform: scale(0.96);
+  }
 
   .status {
     margin-top: 14px;
@@ -205,7 +237,7 @@
   }
   .actions button:hover { border-color: var(--accent); color: var(--accent); }
 
-  /* ── Popup de velocidades al pulsar Repetir ───────────── */
+  /* ── Popup velocidades ──────────────────────────────── */
   .speed-popup {
     position: absolute;
     bottom: calc(100% + 8px);
@@ -248,11 +280,7 @@
     cursor: pointer;
     transition: all 0.15s;
   }
-  .speed-popup .sp-btn:hover {
-    border-color: var(--accent);
-    color: #fff;
-    background: var(--accent);
-  }
+  .speed-popup .sp-btn:hover { border-color: var(--accent); color: #fff; background: var(--accent); }
   .speed-popup .sp-btn:active { transform: scale(0.95); }
 
   .warning {
@@ -267,7 +295,7 @@
   }
   body.dark .warning { background: #3a2a10; border-color: #b7791f; color: #ffd89b; }
 
-  /* ── Velocidad global (auto-habla) ────────────────────── */
+  /* ── Velocidad global ───────────────────────────────── */
   .speed-row {
     display: flex;
     align-items: center;
@@ -299,48 +327,32 @@
     cursor: pointer;
   }
   .speed-row input[type="range"]::-moz-range-thumb {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: var(--accent);
-    cursor: pointer;
-    border: none;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--accent); cursor: pointer; border: none;
   }
   .speed-value { font-weight: 700; color: var(--accent); min-width: 40px; text-align: right; }
 
-  /* ── Historial ────────────────────────────────────────── */
+  /* ── Historial ──────────────────────────────────────── */
   .history-section {
     margin-top: 24px;
     border-top: 1px solid var(--divider);
     padding-top: 16px;
   }
   .history-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    user-select: none;
-    padding: 6px 0;
+    display: flex; justify-content: space-between; align-items: center;
+    cursor: pointer; user-select: none; padding: 6px 0;
   }
   .history-header h3 { font-size: 0.95rem; color: var(--card-text); font-weight: 700; }
   .history-toggle { font-size: 0.75rem; color: var(--card-subtext); transition: transform 0.3s; }
   .history-section.collapsed .history-toggle { transform: rotate(-90deg); }
   .history-section.collapsed .history-list { display: none; }
   .history-list {
-    margin-top: 10px;
-    max-height: 260px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+    margin-top: 10px; max-height: 260px; overflow-y: auto;
+    display: flex; flex-direction: column; gap: 8px;
   }
   .history-item {
-    background: var(--history-bg);
-    border-radius: 10px;
-    padding: 10px 12px;
-    font-size: 0.82rem;
-    cursor: pointer;
-    transition: background 0.2s;
+    background: var(--history-bg); border-radius: 10px; padding: 10px 12px;
+    font-size: 0.82rem; cursor: pointer; transition: background 0.2s;
     border-left: 3px solid var(--accent);
   }
   .history-item:hover { background: var(--border); }
@@ -354,7 +366,7 @@
   }
   .clear-history:hover { background: rgba(229,62,62,0.1); }
 
-  /* ── Crédito ─────────────────────────────────────────── */
+  /* ── Crédito ────────────────────────────────────────── */
   .credit {
     margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--divider);
     display: flex; align-items: center; justify-content: center;
@@ -373,7 +385,7 @@
     .langs { grid-template-columns: 1fr 40px 1fr; gap: 8px; }
     .swap-btn { width: 40px; height: 42px; }
     .record-btn { font-size: 1rem; padding: 18px; }
-    .result .text { font-size: 1rem; }
+    .result .text { font-size: 1rem; line-height: 1.9; }
     .speed-popup { min-width: 200px; }
   }
 </style>
@@ -417,14 +429,16 @@
   </div>
 
   <div class="result translation" id="resTraduccion">
-    <div class="label">🔁 Traducción</div>
+    <div class="label">
+      <span>🔁 Traducción</span>
+      <span class="hint">👆 Toca una palabra para oírla</span>
+    </div>
     <div class="text" id="textoTraducido"></div>
     <div class="actions">
       <button id="btnRepetir">🔊 Repetir</button>
       <button id="btnCopiar">📋 Copiar</button>
       <button id="btnCompartir">📤 Compartir</button>
 
-      <!-- Popup de velocidades rápidas -->
       <div class="speed-popup" id="speedPopup">
         <div class="popup-title">Velocidad de reproducción</div>
         <button class="sp-btn" data-speed="0.5">0.5x</button>
@@ -439,7 +453,6 @@
 
   <div class="status" id="status"></div>
 
-  <!-- ── Historial ─────────────────────────────────────── -->
   <div class="history-section" id="historySection">
     <div class="history-header" id="historyHeader">
       <h3>📚 Historial <span id="historyCount"></span></h3>
@@ -453,7 +466,6 @@
     </div>
   </div>
 
-  <!-- Crédito -->
   <div class="credit">
     <span class="heart">♥</span>
     Diseñada por: <strong>Ing. Hernán Quiroz</strong>
@@ -484,6 +496,9 @@ const IDIOMAS = {
   "th": { nombre: "🇹🇭 Tailandés",  voz: "th-TH", google: "th"    },
   "vi": { nombre: "🇻🇳 Vietnamita", voz: "vi-VN", google: "vi"    }
 };
+
+// Idiomas sin espacios (se dividen por caracteres)
+const IDIOMAS_SIN_ESPACIOS = new Set(["zh", "ja", "ko", "th"]);
 
 const STORAGE = { tema: "tv_tema", historial: "tv_historial", velocidad: "tv_velocidad" };
 
@@ -537,7 +552,7 @@ btnTema.addEventListener("click", () => {
   aplicarTema(document.body.classList.contains("dark") ? "light" : "dark");
 });
 
-// ─── Velocidad global (para auto-habla) ─────────────────────
+// ─── Velocidad global ───────────────────────────────────────
 const velGuardada = localStorage.getItem(STORAGE.velocidad) || "1";
 speed.value = velGuardada;
 speedValue.textContent = parseFloat(velGuardada).toFixed(1) + "x";
@@ -575,7 +590,7 @@ function renderHistorial() {
     `;
     div.addEventListener("click", () => {
       textoTranscrito.textContent = item.origen;
-      textoTraducido.textContent = item.traduccion;
+      renderPalabrasTocables(item.traduccion);
       resTrans.classList.add("show");
       resTrad.classList.add("show");
       selOrigen.value = item.src;
@@ -667,11 +682,11 @@ function iniciarGrabacion() {
     setStatus("🔁 Traduciendo...");
     try {
       const traduccion = await traducir(texto, selOrigen.value, selDestino.value);
-      textoTraducido.textContent = traduccion;
+      renderPalabrasTocables(traduccion);
       resTrad.classList.add("show");
       setStatus("🔊 Hablando...");
       hablar(traduccion, selDestino.value, parseFloat(speed.value) || 1);
-      setStatus("✅ Listo");
+      setStatus("✅ Listo — toca cualquier palabra para repetirla");
       agregarAlHistorial(texto, traduccion, selOrigen.value, selDestino.value);
     } catch (e) {
       console.error(e);
@@ -736,7 +751,67 @@ async function traducirMyMemory(texto, srcCode, tgtCode) {
   return data.responseData.translatedText;
 }
 
-// ─── Texto a voz (con velocidad parametrizable) ─────────────
+// ─── Renderizar texto con palabras tocables ─────────────────
+let textoTraducidoActual = ""; // guardamos el texto plano para copiar/compartir
+
+function renderPalabrasTocables(texto) {
+  textoTraducidoActual = texto;
+  textoTraducido.innerHTML = "";
+
+  const langCode = selDestino.value;
+  const sinEspacios = IDIOMAS_SIN_ESPACIOS.has(langCode);
+
+  if (sinEspacios) {
+    // Chino / japonés / coreano / tailandés → un <span> por carácter
+    for (const ch of texto) {
+      if (/\s/.test(ch)) {
+        textoTraducido.appendChild(document.createTextNode(ch));
+        continue;
+      }
+      const span = document.createElement("span");
+      span.className = "word";
+      span.textContent = ch;
+      span.dataset.word = ch;
+      textoTraducido.appendChild(span);
+    }
+  } else {
+    // Idiomas con espacios → split conservando los espacios
+    const partes = texto.split(/(\s+|[.,!?;:¿¡"()\[\]{}…—–])/);
+    for (const p of partes) {
+      if (!p) continue;
+      // Si es solo puntuación o espacios, no lo hacemos tocable
+      if (/^\s+$/.test(p) || /^[.,!?;:¿¡"()\[\]{}…—–]+$/.test(p)) {
+        textoTraducido.appendChild(document.createTextNode(p));
+      } else {
+        const span = document.createElement("span");
+        span.className = "word";
+        span.textContent = p;
+        span.dataset.word = p;
+        textoTraducido.appendChild(span);
+      }
+    }
+  }
+
+  // Añadir listener a cada palabra
+  textoTraducido.querySelectorAll(".word").forEach(span => {
+    span.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const palabra = span.dataset.word;
+      if (!palabra) return;
+
+      // Feedback visual
+      span.classList.add("active");
+      setTimeout(() => span.classList.remove("active"), 300);
+
+      // Reproducir solo esa palabra, a la velocidad global
+      hablar(palabra, selDestino.value, parseFloat(speed.value) || 1);
+      setStatus(`🔊 "${palabra}"`);
+      setTimeout(() => setStatus("✅ Listo — toca cualquier palabra para repetirla"), 1200);
+    });
+  });
+}
+
+// ─── Texto a voz ────────────────────────────────────────────
 function hablar(texto, langCode, rate = 1) {
   if (!("speechSynthesis" in window)) return;
   window.speechSynthesis.cancel();
@@ -753,40 +828,29 @@ function hablar(texto, langCode, rate = 1) {
   window.speechSynthesis.speak(utter);
 }
 
-// ─── Popup de velocidad al pulsar Repetir ───────────────────
-function mostrarPopupVelocidad() {
-  speedPopup.classList.add("show");
-}
-
-function ocultarPopupVelocidad() {
-  speedPopup.classList.remove("show");
-}
+// ─── Popup velocidad ────────────────────────────────────────
+function mostrarPopupVelocidad() { speedPopup.classList.add("show"); }
+function ocultarPopupVelocidad() { speedPopup.classList.remove("show"); }
 
 btnRepetir.addEventListener("click", (e) => {
   e.stopPropagation();
-  if (!textoTraducido.textContent) return;
-  // Toggle del popup
-  if (speedPopup.classList.contains("show")) {
-    ocultarPopupVelocidad();
-  } else {
-    mostrarPopupVelocidad();
-  }
+  if (!textoTraducidoActual) return;
+  if (speedPopup.classList.contains("show")) ocultarPopupVelocidad();
+  else mostrarPopupVelocidad();
 });
 
-// Cada botón del popup reproduce a esa velocidad
 speedPopup.querySelectorAll(".sp-btn").forEach(btn => {
   btn.addEventListener("click", (e) => {
     e.stopPropagation();
     const rate = parseFloat(btn.dataset.speed);
-    if (!textoTraducido.textContent) return;
-    hablar(textoTraducido.textContent, selDestino.value, rate);
+    if (!textoTraducidoActual) return;
+    hablar(textoTraducidoActual, selDestino.value, rate);
     setStatus(`🔊 Reproduciendo a ${rate}x`);
-    setTimeout(() => setStatus("✅ Listo"), 1500);
+    setTimeout(() => setStatus("✅ Listo — toca cualquier palabra para repetirla"), 1500);
     ocultarPopupVelocidad();
   });
 });
 
-// Cerrar el popup al hacer clic fuera
 document.addEventListener("click", (e) => {
   if (!speedPopup.contains(e.target) && e.target !== btnRepetir) {
     ocultarPopupVelocidad();
@@ -801,21 +865,20 @@ btnGrabar.addEventListener("click", () => {
 
 document.getElementById("btnCopiar").addEventListener("click", async () => {
   try {
-    await navigator.clipboard.writeText(textoTraducido.textContent);
+    await navigator.clipboard.writeText(textoTraducidoActual);
     setStatus("📋 Copiado");
-    setTimeout(() => setStatus("✅ Listo"), 1500);
+    setTimeout(() => setStatus("✅ Listo — toca cualquier palabra para repetirla"), 1500);
   } catch (e) {
     setStatus("❌ No se pudo copiar", true);
   }
 });
 
 document.getElementById("btnCompartir").addEventListener("click", async () => {
-  const texto = textoTraducido.textContent;
-  if (!texto) return;
+  if (!textoTraducidoActual) return;
   if (navigator.share) {
-    try { await navigator.share({ text: texto, title: "Traducción" }); } catch (e) {}
+    try { await navigator.share({ text: textoTraducidoActual, title: "Traducción" }); } catch (e) {}
   } else {
-    window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, "_blank");
+    window.open(`https://wa.me/?text=${encodeURIComponent(textoTraducidoActual)}`, "_blank");
   }
 });
 
@@ -825,7 +888,7 @@ if ("speechSynthesis" in window) {
   window.speechSynthesis.getVoices();
 }
 
-// ─── Service Worker (PWA) ───────────────────────────────────
+// Service Worker PWA
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("sw.js").catch(err => console.warn("SW:", err));
