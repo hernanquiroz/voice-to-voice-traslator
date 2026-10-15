@@ -2,63 +2,157 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#667eea">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Traductor Voz">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
 <title>🎙️ Traductor de Voz a Voz</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --card-bg: #ffffff;
+    --card-text: #333333;
+    --card-subtext: #666666;
+    --border: #e0e0e0;
+    --input-bg: #ffffff;
+    --input-text: #333333;
+    --result-trans: #f0f4ff;
+    --result-trad: #f0fff4;
+    --accent: #667eea;
+    --accent-2: #764ba2;
+    --divider: #ececec;
+    --history-bg: #fafafa;
+  }
+  body.dark {
+    --bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    --card-bg: #1e1e2e;
+    --card-text: #e0e0e0;
+    --card-subtext: #999999;
+    --border: #333344;
+    --input-bg: #2a2a3e;
+    --input-text: #e0e0e0;
+    --result-trans: #1a1f3a;
+    --result-trad: #1a2a1f;
+    --accent: #8b9dff;
+    --accent-2: #b28ddb;
+    --divider: #333344;
+    --history-bg: #23233a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--bg);
+    background-attachment: fixed;
     min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 20px;
+    transition: background 0.3s;
+    color: var(--card-text);
+  }
+  .container {
+    background: var(--card-bg);
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    padding: 32px;
+    max-width: 700px;
+    width: 100%;
+    transition: background 0.3s, color 0.3s;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  h1 { font-size: 1.6rem; color: var(--card-text); line-height: 1.2; }
+  .subtitle { color: var(--card-subtext); margin-bottom: 24px; font-size: 0.9rem; }
+
+  .icon-btn {
+    background: transparent;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    width: 42px;
+    height: 42px;
+    font-size: 1.2rem;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    transition: all 0.2s;
+    color: var(--card-text);
+    flex-shrink: 0;
   }
-  .container {
-    background: #fff;
-    border-radius: 24px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    padding: 40px;
-    max-width: 700px;
-    width: 100%;
-  }
-  h1 { font-size: 1.8rem; margin-bottom: 8px; color: #333; }
-  .subtitle { color: #666; margin-bottom: 24px; font-size: 0.95rem; }
+  .icon-btn:hover { border-color: var(--accent); transform: scale(1.05); }
+  .icon-btn:active { transform: scale(0.95); }
 
   .langs {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 24px;
+    grid-template-columns: 1fr 44px 1fr;
+    gap: 10px;
+    align-items: end;
+    margin-bottom: 20px;
   }
-  .langs label { display: block; font-size: 0.85rem; color: #555; margin-bottom: 6px; font-weight: 600; }
+  .langs label { display: block; font-size: 0.8rem; color: var(--card-subtext); margin-bottom: 6px; font-weight: 600; }
   select {
     width: 100%;
     padding: 12px;
-    border: 2px solid #e0e0e0;
+    border: 2px solid var(--border);
     border-radius: 12px;
-    font-size: 1rem;
-    background: #fff;
+    font-size: 0.95rem;
+    background: var(--input-bg);
+    color: var(--input-text);
     cursor: pointer;
     transition: border-color 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    padding-right: 34px;
   }
-  select:focus { outline: none; border-color: #667eea; }
+  select:focus { outline: none; border-color: var(--accent); }
+
+  .swap-btn {
+    background: transparent;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    height: 45px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--card-text);
+    width: 44px;
+  }
+  .swap-btn:hover { border-color: var(--accent); color: var(--accent); }
 
   .record-btn {
     width: 100%;
     padding: 20px;
     border: none;
     border-radius: 16px;
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     font-weight: 700;
     color: #fff;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
     box-shadow: 0 8px 20px rgba(102,126,234,0.4);
+    margin-top: 8px;
   }
   .record-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 25px rgba(102,126,234,0.5); }
+  .record-btn:active { transform: translateY(0); }
   .record-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
   .record-btn.recording {
     background: linear-gradient(135deg, #f56565 0%, #c53030 100%);
@@ -66,44 +160,100 @@
   }
   @keyframes pulse {
     0%, 100% { box-shadow: 0 8px 20px rgba(245,101,101,0.4); }
-    50% { box-shadow: 0 8px 40px rgba(245,101,101,0.8); }
+    50%      { box-shadow: 0 8px 40px rgba(245,101,101,0.8); }
   }
 
   .result {
-    margin-top: 24px;
-    padding: 20px;
+    margin-top: 20px;
+    padding: 18px;
     border-radius: 16px;
     display: none;
+    animation: slideIn 0.3s ease;
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
   .result.show { display: block; }
-  .result.transcript { background: #f0f4ff; border-left: 4px solid #667eea; }
-  .result.translation { background: #f0fff4; border-left: 4px solid #48bb78; }
-  .result .label { font-size: 0.8rem; text-transform: uppercase; color: #666; margin-bottom: 8px; font-weight: 700; letter-spacing: 0.5px; }
-  .result .text { font-size: 1.15rem; color: #222; line-height: 1.5; }
+  .result.transcript { background: var(--result-trans); border-left: 4px solid var(--accent); }
+  .result.translation { background: var(--result-trad); border-left: 4px solid #48bb78; }
+  .result .label { font-size: 0.75rem; text-transform: uppercase; color: var(--card-subtext); margin-bottom: 8px; font-weight: 700; letter-spacing: 0.5px; }
+  .result .text { font-size: 1.1rem; color: var(--card-text); line-height: 1.5; word-break: break-word; }
 
   .status {
-    margin-top: 16px;
+    margin-top: 14px;
     text-align: center;
-    font-size: 0.9rem;
-    color: #666;
+    font-size: 0.88rem;
+    color: var(--card-subtext);
     min-height: 20px;
   }
   .status.error { color: #c53030; font-weight: 600; }
+  body.dark .status.error { color: #ff8080; }
 
-  .actions { display: flex; gap: 12px; margin-top: 16px; }
+  .actions { display: flex; gap: 10px; margin-top: 14px; position: relative; }
   .actions button {
     flex: 1;
-    padding: 12px;
-    border: 2px solid #e0e0e0;
+    padding: 11px;
+    border: 2px solid var(--border);
     border-radius: 12px;
-    background: #fff;
-    font-size: 0.9rem;
+    background: var(--input-bg);
+    font-size: 0.88rem;
     font-weight: 600;
     cursor: pointer;
-    color: #444;
+    color: var(--card-text);
     transition: all 0.2s;
   }
-  .actions button:hover { border-color: #667eea; color: #667eea; }
+  .actions button:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── Popup de velocidades al pulsar Repetir ───────────── */
+  .speed-popup {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 0;
+    background: var(--card-bg);
+    border: 2px solid var(--accent);
+    border-radius: 14px;
+    padding: 10px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+    display: none;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    z-index: 50;
+    animation: popIn 0.18s ease;
+    min-width: 240px;
+  }
+  .speed-popup.show { display: grid; }
+  @keyframes popIn {
+    from { opacity: 0; transform: translateY(6px) scale(0.95); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .speed-popup .popup-title {
+    grid-column: 1 / -1;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    color: var(--card-subtext);
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-align: center;
+    margin-bottom: 2px;
+  }
+  .speed-popup .sp-btn {
+    padding: 9px 6px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    background: var(--input-bg);
+    color: var(--card-text);
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .speed-popup .sp-btn:hover {
+    border-color: var(--accent);
+    color: #fff;
+    background: var(--accent);
+  }
+  .speed-popup .sp-btn:active { transform: scale(0.95); }
 
   .warning {
     background: #fffaf0;
@@ -115,38 +265,126 @@
     margin-bottom: 20px;
     display: none;
   }
+  body.dark .warning { background: #3a2a10; border-color: #b7791f; color: #ffd89b; }
 
-  /* ── Crédito dentro de la tarjeta (footer) ────────────── */
-  .credit {
-    margin-top: 32px;
-    padding-top: 18px;
-    border-top: 1px solid #ececec;
+  /* ── Velocidad global (auto-habla) ────────────────────── */
+  .speed-row {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 8px;
+    gap: 12px;
+    margin-top: 14px;
+    padding: 10px 14px;
+    background: var(--history-bg);
+    border-radius: 12px;
     font-size: 0.85rem;
-    color: #888;
-    letter-spacing: 0.3px;
+    color: var(--card-subtext);
   }
-  .credit .heart {
-    color: #e53e3e;
-    animation: beat 1.6s infinite;
-    font-size: 0.9rem;
+  .speed-row label { font-weight: 600; white-space: nowrap; }
+  .speed-row input[type="range"] {
+    flex: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border);
+    outline: none;
   }
-  .credit strong {
-    color: #667eea;
-    font-weight: 700;
+  .speed-row input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
   }
+  .speed-row input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: none;
+  }
+  .speed-value { font-weight: 700; color: var(--accent); min-width: 40px; text-align: right; }
+
+  /* ── Historial ────────────────────────────────────────── */
+  .history-section {
+    margin-top: 24px;
+    border-top: 1px solid var(--divider);
+    padding-top: 16px;
+  }
+  .history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    padding: 6px 0;
+  }
+  .history-header h3 { font-size: 0.95rem; color: var(--card-text); font-weight: 700; }
+  .history-toggle { font-size: 0.75rem; color: var(--card-subtext); transition: transform 0.3s; }
+  .history-section.collapsed .history-toggle { transform: rotate(-90deg); }
+  .history-section.collapsed .history-list { display: none; }
+  .history-list {
+    margin-top: 10px;
+    max-height: 260px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .history-item {
+    background: var(--history-bg);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    border-left: 3px solid var(--accent);
+  }
+  .history-item:hover { background: var(--border); }
+  .history-item .h-orig { color: var(--card-subtext); margin-bottom: 3px; }
+  .history-item .h-trad { color: var(--card-text); font-weight: 500; }
+  .history-item .h-langs { font-size: 0.7rem; color: var(--card-subtext); margin-top: 4px; opacity: 0.8; }
+  .history-empty { text-align: center; color: var(--card-subtext); font-size: 0.8rem; padding: 16px; font-style: italic; }
+  .clear-history {
+    background: transparent; border: none; color: #e53e3e; font-size: 0.75rem;
+    cursor: pointer; padding: 4px 8px; border-radius: 6px; font-weight: 600;
+  }
+  .clear-history:hover { background: rgba(229,62,62,0.1); }
+
+  /* ── Crédito ─────────────────────────────────────────── */
+  .credit {
+    margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--divider);
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px; font-size: 0.82rem; color: var(--card-subtext); letter-spacing: 0.3px;
+  }
+  .credit .heart { color: #e53e3e; animation: beat 1.6s infinite; font-size: 0.9rem; }
+  .credit strong { color: var(--accent); font-weight: 700; }
   @keyframes beat {
     0%, 100% { transform: scale(1); }
     50%      { transform: scale(1.25); }
+  }
+
+  @media (max-width: 480px) {
+    .container { padding: 22px; border-radius: 20px; }
+    h1 { font-size: 1.35rem; }
+    .langs { grid-template-columns: 1fr 40px 1fr; gap: 8px; }
+    .swap-btn { width: 40px; height: 42px; }
+    .record-btn { font-size: 1rem; padding: 18px; }
+    .result .text { font-size: 1rem; }
+    .speed-popup { min-width: 200px; }
   }
 </style>
 </head>
 <body>
 <div class="container">
-  <h1>🎙️ Traductor de Voz a Voz</h1>
+
+  <div class="header-row">
+    <div><h1>🎙️ Traductor de Voz a Voz</h1></div>
+    <button class="icon-btn" id="btnTema" title="Cambiar tema">🌙</button>
+  </div>
   <p class="subtitle">Habla, traduzco y te respondo con voz — sin servidor, todo en tu navegador.</p>
 
   <div class="warning" id="warning">
@@ -158,6 +396,7 @@
       <label>🗣️ Hablo en...</label>
       <select id="origen"></select>
     </div>
+    <button class="swap-btn" id="btnSwap" title="Intercambiar idiomas">⇄</button>
     <div>
       <label>🔊 Respondo en...</label>
       <select id="destino"></select>
@@ -165,6 +404,12 @@
   </div>
 
   <button class="record-btn" id="btnGrabar">⏺️ Pulsar para grabar</button>
+
+  <div class="speed-row">
+    <label>🔊 Velocidad:</label>
+    <input type="range" id="speed" min="0.5" max="1.8" step="0.1" value="1">
+    <span class="speed-value" id="speedValue">1.0x</span>
+  </div>
 
   <div class="result transcript" id="resTranscripcion">
     <div class="label">📝 Escuché</div>
@@ -177,12 +422,38 @@
     <div class="actions">
       <button id="btnRepetir">🔊 Repetir</button>
       <button id="btnCopiar">📋 Copiar</button>
+      <button id="btnCompartir">📤 Compartir</button>
+
+      <!-- Popup de velocidades rápidas -->
+      <div class="speed-popup" id="speedPopup">
+        <div class="popup-title">Velocidad de reproducción</div>
+        <button class="sp-btn" data-speed="0.5">0.5x</button>
+        <button class="sp-btn" data-speed="0.75">0.75x</button>
+        <button class="sp-btn" data-speed="1">1x</button>
+        <button class="sp-btn" data-speed="1.25">1.25x</button>
+        <button class="sp-btn" data-speed="1.5">1.5x</button>
+        <button class="sp-btn" data-speed="2">2x</button>
+      </div>
     </div>
   </div>
 
   <div class="status" id="status"></div>
 
-  <!-- Crédito de autoría (dentro de la tarjeta) -->
+  <!-- ── Historial ─────────────────────────────────────── -->
+  <div class="history-section" id="historySection">
+    <div class="history-header" id="historyHeader">
+      <h3>📚 Historial <span id="historyCount"></span></h3>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <button class="clear-history" id="btnClearHistory" style="display:none;">Borrar todo</button>
+        <span class="history-toggle">▼</span>
+      </div>
+    </div>
+    <div class="history-list" id="historyList">
+      <div class="history-empty">Aún no hay traducciones</div>
+    </div>
+  </div>
+
+  <!-- Crédito -->
   <div class="credit">
     <span class="heart">♥</span>
     Diseñada por: <strong>Ing. Hernán Quiroz</strong>
@@ -190,33 +461,54 @@
 </div>
 
 <script>
-// ─── Idiomas disponibles ────────────────────────────────────
+// ─── Idiomas ────────────────────────────────────────────────
 const IDIOMAS = {
-  "es":    { nombre: "🇪🇸 Español",   voz: "es-ES", google: "es"    },
-  "en":    { nombre: "🇺🇸 Inglés",     voz: "en-US", google: "en"    },
-  "pt":    { nombre: "🇧🇷 Portugués",  voz: "pt-BR", google: "pt"    },
-  "fr":    { nombre: "🇫🇷 Francés",    voz: "fr-FR", google: "fr"    },
-  "de":    { nombre: "🇩🇪 Alemán",     voz: "de-DE", google: "de"    },
-  "it":    { nombre: "🇮🇹 Italiano",   voz: "it-IT", google: "it"    },
-  "ja":    { nombre: "🇯🇵 Japonés",    voz: "ja-JP", google: "ja"    },
-  "zh":    { nombre: "🇨🇳 Chino",      voz: "zh-CN", google: "zh-CN" },
-  "ko":    { nombre: "🇰🇷 Coreano",    voz: "ko-KR", google: "ko"    },
-  "ru":    { nombre: "🇷🇺 Ruso",       voz: "ru-RU", google: "ru"    },
-  "ar":    { nombre: "🇸🇦 Árabe",      voz: "ar-SA", google: "ar"    },
-  "hi":    { nombre: "🇮🇳 Hindi",      voz: "hi-IN", google: "hi"    },
-  "nl":    { nombre: "🇳🇱 Holandés",   voz: "nl-NL", google: "nl"    },
-  "tr":    { nombre: "🇹🇷 Turco",      voz: "tr-TR", google: "tr"    },
-  "pl":    { nombre: "🇵🇱 Polaco",     voz: "pl-PL", google: "pl"    },
-  "sv":    { nombre: "🇸🇪 Sueco",      voz: "sv-SE", google: "sv"    },
-  "el":    { nombre: "🇬🇷 Griego",     voz: "el-GR", google: "el"    },
-  "he":    { nombre: "🇮🇱 Hebreo",     voz: "he-IL", google: "iw"    },
-  "th":    { nombre: "🇹🇭 Tailandés",  voz: "th-TH", google: "th"    },
-  "vi":    { nombre: "🇻🇳 Vietnamita", voz: "vi-VN", google: "vi"    }
+  "es": { nombre: "🇪🇸 Español",   voz: "es-ES", google: "es"    },
+  "en": { nombre: "🇺🇸 Inglés",     voz: "en-US", google: "en"    },
+  "pt": { nombre: "🇧🇷 Portugués",  voz: "pt-BR", google: "pt"    },
+  "fr": { nombre: "🇫🇷 Francés",    voz: "fr-FR", google: "fr"    },
+  "de": { nombre: "🇩🇪 Alemán",     voz: "de-DE", google: "de"    },
+  "it": { nombre: "🇮🇹 Italiano",   voz: "it-IT", google: "it"    },
+  "ja": { nombre: "🇯🇵 Japonés",    voz: "ja-JP", google: "ja"    },
+  "zh": { nombre: "🇨🇳 Chino",      voz: "zh-CN", google: "zh-CN" },
+  "ko": { nombre: "🇰🇷 Coreano",    voz: "ko-KR", google: "ko"    },
+  "ru": { nombre: "🇷🇺 Ruso",       voz: "ru-RU", google: "ru"    },
+  "ar": { nombre: "🇸🇦 Árabe",      voz: "ar-SA", google: "ar"    },
+  "hi": { nombre: "🇮🇳 Hindi",      voz: "hi-IN", google: "hi"    },
+  "nl": { nombre: "🇳🇱 Holandés",   voz: "nl-NL", google: "nl"    },
+  "tr": { nombre: "🇹🇷 Turco",      voz: "tr-TR", google: "tr"    },
+  "pl": { nombre: "🇵🇱 Polaco",     voz: "pl-PL", google: "pl"    },
+  "sv": { nombre: "🇸🇪 Sueco",      voz: "sv-SE", google: "sv"    },
+  "el": { nombre: "🇬🇷 Griego",     voz: "el-GR", google: "el"    },
+  "he": { nombre: "🇮🇱 Hebreo",     voz: "he-IL", google: "iw"    },
+  "th": { nombre: "🇹🇭 Tailandés",  voz: "th-TH", google: "th"    },
+  "vi": { nombre: "🇻🇳 Vietnamita", voz: "vi-VN", google: "vi"    }
 };
 
-// ─── Rellenar los <select> ──────────────────────────────────
-const selOrigen = document.getElementById("origen");
-const selDestino = document.getElementById("destino");
+const STORAGE = { tema: "tv_tema", historial: "tv_historial", velocidad: "tv_velocidad" };
+
+// ─── Referencias DOM ────────────────────────────────────────
+const selOrigen    = document.getElementById("origen");
+const selDestino   = document.getElementById("destino");
+const btnSwap      = document.getElementById("btnSwap");
+const btnGrabar    = document.getElementById("btnGrabar");
+const btnTema      = document.getElementById("btnTema");
+const status       = document.getElementById("status");
+const resTrans     = document.getElementById("resTranscripcion");
+const resTrad      = document.getElementById("resTraduccion");
+const textoTranscrito = document.getElementById("textoTranscrito");
+const textoTraducido  = document.getElementById("textoTraducido");
+const warning      = document.getElementById("warning");
+const speed        = document.getElementById("speed");
+const speedValue   = document.getElementById("speedValue");
+const historySection = document.getElementById("historySection");
+const historyList  = document.getElementById("historyList");
+const historyCount = document.getElementById("historyCount");
+const btnClearHistory = document.getElementById("btnClearHistory");
+const speedPopup   = document.getElementById("speedPopup");
+const btnRepetir   = document.getElementById("btnRepetir");
+
+// ─── Inicializar selects ────────────────────────────────────
 for (const [code, info] of Object.entries(IDIOMAS)) {
   selOrigen.innerHTML += `<option value="${code}">${info.nombre}</option>`;
   selDestino.innerHTML += `<option value="${code}">${info.nombre}</option>`;
@@ -224,23 +516,124 @@ for (const [code, info] of Object.entries(IDIOMAS)) {
 selOrigen.value = "es";
 selDestino.value = "en";
 
-// ─── Elementos del DOM ──────────────────────────────────────
-const btnGrabar = document.getElementById("btnGrabar");
-const status = document.getElementById("status");
-const resTrans = document.getElementById("resTranscripcion");
-const resTrad = document.getElementById("resTraduccion");
-const textoTranscrito = document.getElementById("textoTranscrito");
-const textoTraducido = document.getElementById("textoTraducido");
-const warning = document.getElementById("warning");
+// ─── Tema ───────────────────────────────────────────────────
+function aplicarTema(tema) {
+  if (tema === "dark") {
+    document.body.classList.add("dark");
+    btnTema.textContent = "☀️";
+  } else {
+    document.body.classList.remove("dark");
+    btnTema.textContent = "🌙";
+  }
+  localStorage.setItem(STORAGE.tema, tema);
+  document.querySelector('meta[name="theme-color"]')
+    .setAttribute("content", tema === "dark" ? "#1a1a2e" : "#667eea");
+}
+const temaGuardado = localStorage.getItem(STORAGE.tema)
+  || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+aplicarTema(temaGuardado);
 
-// ─── Detectar soporte del navegador ─────────────────────────
+btnTema.addEventListener("click", () => {
+  aplicarTema(document.body.classList.contains("dark") ? "light" : "dark");
+});
+
+// ─── Velocidad global (para auto-habla) ─────────────────────
+const velGuardada = localStorage.getItem(STORAGE.velocidad) || "1";
+speed.value = velGuardada;
+speedValue.textContent = parseFloat(velGuardada).toFixed(1) + "x";
+speed.addEventListener("input", () => {
+  const v = parseFloat(speed.value);
+  speedValue.textContent = v.toFixed(1) + "x";
+  localStorage.setItem(STORAGE.velocidad, speed.value);
+});
+
+// ─── Historial ──────────────────────────────────────────────
+let historial = [];
+try { historial = JSON.parse(localStorage.getItem(STORAGE.historial) || "[]"); } catch(e) { historial = []; }
+
+function guardarHistorial() { localStorage.setItem(STORAGE.historial, JSON.stringify(historial)); }
+
+function renderHistorial() {
+  historyList.innerHTML = "";
+  if (historial.length === 0) {
+    historyList.innerHTML = '<div class="history-empty">Aún no hay traducciones</div>';
+    btnClearHistory.style.display = "none";
+    historyCount.textContent = "";
+    return;
+  }
+  btnClearHistory.style.display = "inline-block";
+  historyCount.textContent = `(${historial.length})`;
+
+  historial.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "history-item";
+    div.title = "Clic para reutilizar";
+    div.innerHTML = `
+      <div class="h-orig">📝 ${escapeHtml(item.origen)}</div>
+      <div class="h-trad">🔁 ${escapeHtml(item.traduccion)}</div>
+      <div class="h-langs">${IDIOMAS[item.src]?.nombre || item.src} → ${IDIOMAS[item.tgt]?.nombre || item.tgt}</div>
+    `;
+    div.addEventListener("click", () => {
+      textoTranscrito.textContent = item.origen;
+      textoTraducido.textContent = item.traduccion;
+      resTrans.classList.add("show");
+      resTrad.classList.add("show");
+      selOrigen.value = item.src;
+      selDestino.value = item.tgt;
+      setStatus("📚 Traducción reutilizada");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+    historyList.appendChild(div);
+  });
+}
+
+function agregarAlHistorial(origen, traduccion, src, tgt) {
+  const ultimo = historial[0];
+  if (ultimo && ultimo.origen === origen && ultimo.src === src && ultimo.tgt === tgt) return;
+  historial.unshift({ origen, traduccion, src, tgt, ts: Date.now() });
+  if (historial.length > 20) historial = historial.slice(0, 20);
+  guardarHistorial();
+  renderHistorial();
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+
+document.getElementById("historyHeader").addEventListener("click", (e) => {
+  if (e.target.id === "btnClearHistory" || e.target.closest("#btnClearHistory")) return;
+  historySection.classList.toggle("collapsed");
+});
+
+btnClearHistory.addEventListener("click", (e) => {
+  e.stopPropagation();
+  if (confirm("¿Borrar todo el historial?")) {
+    historial = [];
+    guardarHistorial();
+    renderHistorial();
+  }
+});
+
+renderHistorial();
+
+// ─── Swap idiomas ───────────────────────────────────────────
+btnSwap.addEventListener("click", () => {
+  const a = selOrigen.value;
+  selOrigen.value = selDestino.value;
+  selDestino.value = a;
+  setStatus("⇄ Idiomas intercambiados");
+  setTimeout(() => setStatus(""), 1500);
+});
+
+// ─── Reconocimiento ─────────────────────────────────────────
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 if (!SR) {
   warning.style.display = "block";
   btnGrabar.disabled = true;
 }
 
-// ─── Estado ─────────────────────────────────────────────────
 let grabando = false;
 let reconocimiento = null;
 
@@ -249,10 +642,8 @@ function setStatus(msg, isError = false) {
   status.className = "status" + (isError ? " error" : "");
 }
 
-// ─── Función: iniciar grabación ─────────────────────────────
 function iniciarGrabacion() {
   if (!SR) return;
-
   reconocimiento = new SR();
   reconocimiento.lang = IDIOMAS[selOrigen.value].voz;
   reconocimiento.continuous = false;
@@ -266,6 +657,7 @@ function iniciarGrabacion() {
     setStatus("🎤 Escuchando... habla ahora");
     resTrans.classList.remove("show");
     resTrad.classList.remove("show");
+    ocultarPopupVelocidad();
   };
 
   reconocimiento.onresult = async (event) => {
@@ -273,34 +665,31 @@ function iniciarGrabacion() {
     textoTranscrito.textContent = texto;
     resTrans.classList.add("show");
     setStatus("🔁 Traduciendo...");
-
     try {
       const traduccion = await traducir(texto, selOrigen.value, selDestino.value);
       textoTraducido.textContent = traduccion;
       resTrad.classList.add("show");
       setStatus("🔊 Hablando...");
-      hablar(traduccion, selDestino.value);
+      hablar(traduccion, selDestino.value, parseFloat(speed.value) || 1);
       setStatus("✅ Listo");
+      agregarAlHistorial(texto, traduccion, selOrigen.value, selDestino.value);
     } catch (e) {
       console.error(e);
-      setStatus("❌ Error al traducir: " + e.message, true);
+      setStatus("❌ " + e.message, true);
     }
   };
 
   reconocimiento.onerror = (event) => {
-    console.error("SpeechRecognition error:", event.error);
-    let msg = "❌ Error de reconocimiento: " + event.error;
+    console.error("SR error:", event.error);
+    let msg = "❌ Error: " + event.error;
     if (event.error === "not-allowed") msg = "❌ Permiso de micrófono denegado.";
     if (event.error === "no-speech")   msg = "🎤 No detecté voz. Intenta de nuevo.";
-    if (event.error === "network")     msg = "❌ Error de red en el reconocimiento.";
+    if (event.error === "network")     msg = "❌ Error de red.";
     setStatus(msg, true);
     detenerGrabacion();
   };
 
-  reconocimiento.onend = () => {
-    detenerGrabacion();
-  };
-
+  reconocimiento.onend = () => detenerGrabacion();
   reconocimiento.start();
 }
 
@@ -308,109 +697,139 @@ function detenerGrabacion() {
   grabando = false;
   btnGrabar.textContent = "⏺️ Pulsar para grabar";
   btnGrabar.classList.remove("recording");
-  if (reconocimiento) {
-    try { reconocimiento.stop(); } catch(e) {}
-  }
+  if (reconocimiento) { try { reconocimiento.stop(); } catch(e) {} }
 }
 
-// ─── Traducción: Google primero, MyMemory como respaldo ─────
+// ─── Traducción ─────────────────────────────────────────────
 async function traducir(texto, srcCode, tgtCode) {
   if (!texto.trim()) throw new Error("Texto vacío");
-
   const src = IDIOMAS[srcCode].google;
   const tgt = IDIOMAS[tgtCode].google;
 
-  // 1) Google Translate (endpoint público, sin API key)
   try {
     const g = await traducirGoogle(texto, src, tgt);
-    if (g && g.trim() && g.trim().toLowerCase() !== texto.trim().toLowerCase()) {
-      console.log("✅ Traducido con Google");
-      return g;
-    }
-  } catch (e) {
-    console.warn("Google falló:", e);
-  }
+    if (g && g.trim() && g.trim().toLowerCase() !== texto.trim().toLowerCase()) return g;
+  } catch (e) { console.warn("Google falló:", e); }
 
-  // 2) MyMemory como respaldo
   try {
     const m = await traducirMyMemory(texto, srcCode, tgtCode);
-    if (m && m.trim() && m.trim().toLowerCase() !== texto.trim().toLowerCase()) {
-      console.log("✅ Traducido con MyMemory");
-      return m;
-    }
-  } catch (e) {
-    console.warn("MyMemory falló:", e);
-  }
+    if (m && m.trim() && m.trim().toLowerCase() !== texto.trim().toLowerCase()) return m;
+  } catch (e) { console.warn("MyMemory falló:", e); }
 
-  // 3) Si ambos devolvieron el mismo texto, avisamos
-  throw new Error("No se pudo traducir a este idioma. Prueba con otro destino.");
+  throw new Error("No se pudo traducir a este idioma.");
 }
 
-// Google Translate endpoint público
 async function traducirGoogle(texto, src, tgt) {
   const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${src}&tl=${tgt}&dt=t&q=${encodeURIComponent(texto)}`;
-  const resp = await fetch(url);
-  if (!resp.ok) throw new Error("HTTP " + resp.status);
-  const data = await resp.json();
-  // data[0] es un array de segmentos; los unimos
-  const partes = data[0].map(seg => seg[0]).filter(Boolean);
-  return partes.join("");
+  const r = await fetch(url);
+  if (!r.ok) throw new Error("HTTP " + r.status);
+  const data = await r.json();
+  return data[0].map(s => s[0]).filter(Boolean).join("");
 }
 
-// MyMemory (respaldo)
 async function traducirMyMemory(texto, srcCode, tgtCode) {
   const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(texto)}&langpair=${srcCode}|${tgtCode}`;
-  const resp = await fetch(url);
-  if (!resp.ok) throw new Error("HTTP " + resp.status);
-  const data = await resp.json();
-  if (data.responseStatus !== 200) {
-    throw new Error(data.responseDetails || "Servicio no disponible");
-  }
+  const r = await fetch(url);
+  if (!r.ok) throw new Error("HTTP " + r.status);
+  const data = await r.json();
+  if (data.responseStatus !== 200) throw new Error(data.responseDetails || "No disponible");
   return data.responseData.translatedText;
 }
 
-// ─── Texto a voz nativo ─────────────────────────────────────
-function hablar(texto, langCode) {
+// ─── Texto a voz (con velocidad parametrizable) ─────────────
+function hablar(texto, langCode, rate = 1) {
   if (!("speechSynthesis" in window)) return;
   window.speechSynthesis.cancel();
-
   const utter = new SpeechSynthesisUtterance(texto);
   utter.lang = IDIOMAS[langCode].voz;
-  utter.rate = 1;
+  utter.rate = Math.max(0.1, Math.min(3, rate));
   utter.pitch = 1;
 
   const voces = window.speechSynthesis.getVoices();
-  const prefijo = IDIOMAS[langCode].voz.slice(0, 2);
+  const prefijo = IDIOMAS[langCode].voz.slice(0, 2).toLowerCase();
   const voz = voces.find(v => v.lang.toLowerCase().startsWith(prefijo));
   if (voz) utter.voice = voz;
 
   window.speechSynthesis.speak(utter);
 }
 
-// ─── Eventos ────────────────────────────────────────────────
+// ─── Popup de velocidad al pulsar Repetir ───────────────────
+function mostrarPopupVelocidad() {
+  speedPopup.classList.add("show");
+}
+
+function ocultarPopupVelocidad() {
+  speedPopup.classList.remove("show");
+}
+
+btnRepetir.addEventListener("click", (e) => {
+  e.stopPropagation();
+  if (!textoTraducido.textContent) return;
+  // Toggle del popup
+  if (speedPopup.classList.contains("show")) {
+    ocultarPopupVelocidad();
+  } else {
+    mostrarPopupVelocidad();
+  }
+});
+
+// Cada botón del popup reproduce a esa velocidad
+speedPopup.querySelectorAll(".sp-btn").forEach(btn => {
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const rate = parseFloat(btn.dataset.speed);
+    if (!textoTraducido.textContent) return;
+    hablar(textoTraducido.textContent, selDestino.value, rate);
+    setStatus(`🔊 Reproduciendo a ${rate}x`);
+    setTimeout(() => setStatus("✅ Listo"), 1500);
+    ocultarPopupVelocidad();
+  });
+});
+
+// Cerrar el popup al hacer clic fuera
+document.addEventListener("click", (e) => {
+  if (!speedPopup.contains(e.target) && e.target !== btnRepetir) {
+    ocultarPopupVelocidad();
+  }
+});
+
+// ─── Otros botones ──────────────────────────────────────────
 btnGrabar.addEventListener("click", () => {
   if (grabando) detenerGrabacion();
   else iniciarGrabacion();
 });
 
-document.getElementById("btnRepetir").addEventListener("click", () => {
-  if (textoTraducido.textContent) {
-    hablar(textoTraducido.textContent, selDestino.value);
-  }
-});
-
 document.getElementById("btnCopiar").addEventListener("click", async () => {
   try {
     await navigator.clipboard.writeText(textoTraducido.textContent);
-    setStatus("📋 Copiado al portapapeles");
-    setTimeout(() => setStatus("✅ Listo"), 2000);
+    setStatus("📋 Copiado");
+    setTimeout(() => setStatus("✅ Listo"), 1500);
   } catch (e) {
     setStatus("❌ No se pudo copiar", true);
   }
 });
 
+document.getElementById("btnCompartir").addEventListener("click", async () => {
+  const texto = textoTraducido.textContent;
+  if (!texto) return;
+  if (navigator.share) {
+    try { await navigator.share({ text: texto, title: "Traducción" }); } catch (e) {}
+  } else {
+    window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, "_blank");
+  }
+});
+
+// Voces
 if ("speechSynthesis" in window) {
   window.speechSynthesis.onvoiceschanged = () => {};
+  window.speechSynthesis.getVoices();
+}
+
+// ─── Service Worker (PWA) ───────────────────────────────────
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch(err => console.warn("SW:", err));
+  });
 }
 </script>
 </body>
