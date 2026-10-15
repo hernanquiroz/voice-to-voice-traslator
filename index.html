@@ -192,16 +192,26 @@
 <script>
 // ─── Idiomas disponibles ────────────────────────────────────
 const IDIOMAS = {
-  "es": { nombre: "🇪🇸 Español",   voz: "es-ES" },
-  "en": { nombre: "🇺🇸 Inglés",     voz: "en-US" },
-  "pt": { nombre: "🇧🇷 Portugués",  voz: "pt-BR" },
-  "fr": { nombre: "🇫🇷 Francés",    voz: "fr-FR" },
-  "de": { nombre: "🇩🇪 Alemán",     voz: "de-DE" },
-  "it": { nombre: "🇮🇹 Italiano",   voz: "it-IT" },
-  "ja": { nombre: "🇯🇵 Japonés",    voz: "ja-JP" },
-  "zh": { nombre: "🇨🇳 Chino",      voz: "zh-CN" },
-  "ko": { nombre: "🇰🇷 Coreano",    voz: "ko-KR" },
-  "ru": { nombre: "🇷🇺 Ruso",       voz: "ru-RU" }
+  "es":    { nombre: "🇪🇸 Español",   voz: "es-ES", google: "es"    },
+  "en":    { nombre: "🇺🇸 Inglés",     voz: "en-US", google: "en"    },
+  "pt":    { nombre: "🇧🇷 Portugués",  voz: "pt-BR", google: "pt"    },
+  "fr":    { nombre: "🇫🇷 Francés",    voz: "fr-FR", google: "fr"    },
+  "de":    { nombre: "🇩🇪 Alemán",     voz: "de-DE", google: "de"    },
+  "it":    { nombre: "🇮🇹 Italiano",   voz: "it-IT", google: "it"    },
+  "ja":    { nombre: "🇯🇵 Japonés",    voz: "ja-JP", google: "ja"    },
+  "zh":    { nombre: "🇨🇳 Chino",      voz: "zh-CN", google: "zh-CN" },
+  "ko":    { nombre: "🇰🇷 Coreano",    voz: "ko-KR", google: "ko"    },
+  "ru":    { nombre: "🇷🇺 Ruso",       voz: "ru-RU", google: "ru"    },
+  "ar":    { nombre: "🇸🇦 Árabe",      voz: "ar-SA", google: "ar"    },
+  "hi":    { nombre: "🇮🇳 Hindi",      voz: "hi-IN", google: "hi"    },
+  "nl":    { nombre: "🇳🇱 Holandés",   voz: "nl-NL", google: "nl"    },
+  "tr":    { nombre: "🇹🇷 Turco",      voz: "tr-TR", google: "tr"    },
+  "pl":    { nombre: "🇵🇱 Polaco",     voz: "pl-PL", google: "pl"    },
+  "sv":    { nombre: "🇸🇪 Sueco",      voz: "sv-SE", google: "sv"    },
+  "el":    { nombre: "🇬🇷 Griego",     voz: "el-GR", google: "el"    },
+  "he":    { nombre: "🇮🇱 Hebreo",     voz: "he-IL", google: "iw"    },
+  "th":    { nombre: "🇹🇭 Tailandés",  voz: "th-TH", google: "th"    },
+  "vi":    { nombre: "🇻🇳 Vietnamita", voz: "vi-VN", google: "vi"    }
 };
 
 // ─── Rellenar los <select> ──────────────────────────────────
@@ -303,14 +313,55 @@ function detenerGrabacion() {
   }
 }
 
-// ─── Traducción con MyMemory ────────────────────────────────
-async function traducir(texto, src, tgt) {
+// ─── Traducción: Google primero, MyMemory como respaldo ─────
+async function traducir(texto, srcCode, tgtCode) {
   if (!texto.trim()) throw new Error("Texto vacío");
 
-  const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(texto)}&langpair=${src}|${tgt}`;
+  const src = IDIOMAS[srcCode].google;
+  const tgt = IDIOMAS[tgtCode].google;
+
+  // 1) Google Translate (endpoint público, sin API key)
+  try {
+    const g = await traducirGoogle(texto, src, tgt);
+    if (g && g.trim() && g.trim().toLowerCase() !== texto.trim().toLowerCase()) {
+      console.log("✅ Traducido con Google");
+      return g;
+    }
+  } catch (e) {
+    console.warn("Google falló:", e);
+  }
+
+  // 2) MyMemory como respaldo
+  try {
+    const m = await traducirMyMemory(texto, srcCode, tgtCode);
+    if (m && m.trim() && m.trim().toLowerCase() !== texto.trim().toLowerCase()) {
+      console.log("✅ Traducido con MyMemory");
+      return m;
+    }
+  } catch (e) {
+    console.warn("MyMemory falló:", e);
+  }
+
+  // 3) Si ambos devolvieron el mismo texto, avisamos
+  throw new Error("No se pudo traducir a este idioma. Prueba con otro destino.");
+}
+
+// Google Translate endpoint público
+async function traducirGoogle(texto, src, tgt) {
+  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${src}&tl=${tgt}&dt=t&q=${encodeURIComponent(texto)}`;
   const resp = await fetch(url);
   if (!resp.ok) throw new Error("HTTP " + resp.status);
+  const data = await resp.json();
+  // data[0] es un array de segmentos; los unimos
+  const partes = data[0].map(seg => seg[0]).filter(Boolean);
+  return partes.join("");
+}
 
+// MyMemory (respaldo)
+async function traducirMyMemory(texto, srcCode, tgtCode) {
+  const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(texto)}&langpair=${srcCode}|${tgtCode}`;
+  const resp = await fetch(url);
+  if (!resp.ok) throw new Error("HTTP " + resp.status);
   const data = await resp.json();
   if (data.responseStatus !== 200) {
     throw new Error(data.responseDetails || "Servicio no disponible");
@@ -329,7 +380,8 @@ function hablar(texto, langCode) {
   utter.pitch = 1;
 
   const voces = window.speechSynthesis.getVoices();
-  const voz = voces.find(v => v.lang.startsWith(IDIOMAS[langCode].voz.slice(0, 2)));
+  const prefijo = IDIOMAS[langCode].voz.slice(0, 2);
+  const voz = voces.find(v => v.lang.toLowerCase().startsWith(prefijo));
   if (voz) utter.voice = voz;
 
   window.speechSynthesis.speak(utter);
